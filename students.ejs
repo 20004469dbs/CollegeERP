@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>College ERP System - Students</title>
+  <style>
+    /* Add some basic CSS for the header, nav, main content, and footer */
+    header, nav, main, footer {
+      padding: 1em;
+      margin: 1em auto;
+    }
+
+    /* Style the navigation menu */
+    nav {
+      background-color: #f2f2f2;
+      text-align: center;
+    }
+
+    nav a {
+      padding: 0.5em 1em;
+      text-decoration: none;
+      color: #333;
+    }
+
+    nav a:hover {
+      background-color: #333;
+      color: #fff;
+    }
+
+    /* Style the table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 0.5em;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    /* Style the footer */
+    footer {
+      background-color: #f2f2f2;
+      text-align: center;
+      font-size: 0.8em;
+    }
+
+    h1{
+      text-align: center;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>College ERP System - Students</h1>
+  </header>
+  
+  <nav>
+    <a href="/">Home</a> |
+    <a href="/students">Students</a> |
+    <a href="/courses">Courses</a> |
+    <a href="/faculty">Faculty</a> |
+    <a href="/contact">Contact</a>
+  </nav>
+  
+  <main>
+    <h1>All Students</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Course</th>
+          <th>Date of Birth</th>
+          <th>Phone Number</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% students.forEach(function(student) { %>
+          <tr>
+            <td><%= student.id %></td>
+            <td><%= student.name %></td>
+            <td><%= student.email %></td>
+            <td><%= student.course %></td>
+            <td><%= student.dob.toISOString().split('T')[0] %></td>
+            <td><%= student.phone %></td>
+            <td><button class="btn btn-danger" onclick="deleteStudent(<%= student.id %>)">Delete</button></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    function deleteStudent(id) {
+      if (confirm('Are you sure you want to delete this student?')) {
+        // Send a DELETE request to the server
+        fetch('/students/delete/' + id, {
+          method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // If the deletion was successful, reload the page
+            window.location.reload();
+          } else {
+            alert('An error occurred: ' + data.message);
+          }
+        })
+        .catch(error => {
+          alert('An error occurred: ' + error);
+        });
+      }
+    }
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.0.0/fetch.min.js"></script>
+
+  <footer>
+    &copy; 2023 College ERP System. All rights reserved.
+  </footer>
+</body>
+</html>
