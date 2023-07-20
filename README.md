@@ -60,13 +60,13 @@ az webapp create --resource-group collegeResourceGroup --plan collegeAppServiceP
 }
 ```
 
-## Step 8: Setting Environment Variables
+## Step 5: Setting Environment Variables
 
 Set the required environment variables for your application:
 
 
 
-## Step 9: Final Deployment
+## Step 6: Final Deployment
 
 Finally, go to the Azure portal, find the web application at https://collegeerpcustom.azurewebsites.net/ 
 
