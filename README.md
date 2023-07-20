@@ -33,37 +33,9 @@ Log in to Azure Container Registry (ACR):
 az acr login --name collegeerpacr
 ```
 
-## Step 3: Tagging the Docker Image
 
-Tag your Docker image with the login server of your ACR:
 
-```bash
-docker tag collegeerpcustom:v1 collegeerpacr.azurecr.io/collegeerpcustom:v1
-```
-
-## Step 4: Pushing the Docker Image to ACR
-
-Push the Docker image to your ACR:
-
-```bash
-docker push collegeerpacr.azurecr.io/collegeerpcustom:v1
-```
-
-## Step 5: Creating the Resource Group and MSSQL Server Container in Azure
-
-Create a resource group:
-
-```bash
-az group create --name collegeResourceGroup --location eastus
-```
-
-Create an Azure Container Instances (ACI) for the MSSQL Server:
-
-```bash
-az container create --name sqlservercontainer --resource-group collegeResourceGroup --image mcr.microsoft.com/mssql/server:2022-latest --ip-address Public --ports 1433 --cpu 2 --memory 4 --environment-variables ACCEPT_EULA=Y SA_PASSWORD=Admin@12345
-```
-
-## Step 6: Running the Application Container in Azure
+## Step 3: Running the Application Container in Azure
 
 Create a Web App for Containers service in Azure:
 
@@ -73,22 +45,12 @@ az appservice plan create --name collegeAppServicePlan --resource-group collegeR
 az webapp create --resource-group collegeResourceGroup --plan collegeAppServicePlan --name collegeerpapp --deployment-container-image-name collegeerpacr.azurecr.io/collegeerpcustom:v1
 ```
 
-## step 9 : Go to the web app properties and advance and add json below lines
+## step 4 : Go to the web app properties and advance and add json below lines
 
 ```json
 {
     "name": "DB_HOST",
     "value": "ipaddress",
-    "slotSetting": false
-},
-{
-    "name": "DB_NAME",
-    "value": "mydb",
-    "slotSetting": false
-},
-{
-    "name": "DB_PASSWORD",
-    "value": "Admin@12345",
     "slotSetting": false
 },
 {
@@ -102,9 +64,7 @@ az webapp create --resource-group collegeResourceGroup --plan collegeAppServiceP
 
 Set the required environment variables for your application:
 
-```bash
-az webapp config appsettings set --resource-group collegeResourceGroup --name collegeerpapp --settings DB_HOST=4.157.170.207 DB_NAME=mydb DB_PASSWORD=Admin@12345 DB_USER=sa
-```
+
 
 ## Step 9: Final Deployment
 
